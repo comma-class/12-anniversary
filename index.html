@@ -3,11 +3,11 @@
 </style></head><body><header class="hero"><img src="img/0_5f590c21.jpg" alt="逗點12週年拾貳無限主視覺"><div class="heroText"><div class="tag">COMMA CLASS · 12TH ANNIVERSARY</div><h1>逗點 12 週年｜紀念商品預購</h1><div>12 無限・一啟而行 ♾️</div></div></header><main class="wrap"><section class="intro"><p>12 年來，我們一起累積了無數回憶，也創造了許多值得紀念的時刻。</p><p>為了慶祝逗點 12 週年，我們特別推出一系列週年紀念商品，邀請大家一起收藏這份專屬於逗點的回憶！</p><p>這次也準備了<strong>限時預購優惠</strong>，喜歡的商品千萬別錯過！✨</p><h3>🛍️ 預購資訊</h3><p>📅 <strong>預購優惠期間｜即日起至 12/13（日）</strong></p><p>活動期間內完成預購，即享預購優惠價；12/14（一）起恢復一般販售價格。</p><p>📍 <strong>取貨地點｜各分校教室</strong></p><div class="note"><strong>💛 溫馨提醒</strong><div>部分商品提供組合優惠，實際金額將依選購品項及數量自動計算。請確認訂購資訊及商品尺寸後再送出表單。</div></div><p>一起穿上逗點、收藏回憶，讓 12 週年的美好繼續延續！</p></section><h2 class="heading">01｜挑選紀念商品</h2><div class="products" id="products"></div><h2 class="heading">02｜我的預購清單</h2><section class="panel"><div id="cart"></div><div class="total" id="total"></div><div class="muted">商品價格尚未設定時，系統不會顯示或推算應付金額。</div></section><h2 class="heading">03｜訂購人資料</h2><section class="panel"><div class="two"><div class="field"><label for="name">訂購人姓名 *</label><input id="name" required placeholder="請填入就讀孩子的姓名"><small class="muted">請填寫就讀孩子的姓名，以利分校核對訂單。</small></div><div class="field"><label for="school">所屬分校 *</label><input id="school" required placeholder="請填寫就讀分校名稱"></div><div class="field"><label for="phone">聯絡電話 *</label><input id="phone" type="tel" required placeholder="請填寫聯絡電話"></div><div class="field"><label for="email">電子郵件 *（電子發票寄送使用）</label><input id="email" type="email" required placeholder="example@email.com"><small class="muted">請填寫正確且可正常收信的電子郵件，作為電子發票寄送使用。</small></div></div><div class="field" style="margin-top:14px"><label for="memo">其他備註（選填）</label><textarea id="memo" rows="3" placeholder="其他需求或備註"></textarea></div><p class="muted">* 為必填欄位。電子郵件僅用於後續寄送電子發票。</p><button class="orange wide" id="submit">確認送出預購</button><p class="error" id="error" role="alert"></p><div id="result" hidden><h3 id="resultTitle">✅ 預購已送出</h3><p id="resultMsg" class="muted"></p><textarea id="summary" rows="13" readonly></textarea><button class="secondary" id="copy" style="margin-top:10px">複製訂單內容</button> <button class="secondary" id="again" style="margin-top:10px">再填一筆</button><p class="status" id="copystatus"></p></div></section></main><footer class="footer">COMMA CLASS · 12TH ANNIVERSARY · 拾貳無限</footer><script>
 /* ===== 價格設定：價格公布後填入數字即可（null = 價格待公布） ===== */
 const PRICES={
-  tee:   {pre:null, regular:null},
-  hoodie:{pre:null, regular:null},
-  sock1: {pre:null, regular:null},
-  sock2: {pre:null, regular:null},
-  combo: {pre:null, regular:null}
+  tee:   {pre:350, regular:400},
+  hoodie:{pre:800, regular:900},
+  sock1: {pre:100, regular:150},
+  sock2: {pre:100, regular:150},
+  combo: {pre:1220, regular:1500}
 };
 /* Google 試算表收單網址：部署 Apps Script 後，把網址貼在引號中 */
 const SHEET_URL='https://script.google.com/macros/s/AKfycbywmoY5zZXfzIxN5dm8sT-dTcE8RoSM3hxXzk-5GxP4LbA9KGWfFAvstKxoOSPG2GAA/exec';
