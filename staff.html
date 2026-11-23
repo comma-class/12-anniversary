@@ -61,6 +61,8 @@ details.sizes summary{cursor:pointer;font-weight:800}
 .toast.show{opacity:1}
 .muted{color:#607086;font-size:13px}
 .schooltable{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 6px 2px;margin-bottom:16px;overflow-x:auto}.schooltable table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}.schooltable th{color:#607086;font-weight:700;text-align:right;padding:8px 10px;border-bottom:1px solid var(--line)}.schooltable th:first-child,.schooltable td:first-child{text-align:left}.schooltable td{padding:9px 10px;border-bottom:1px solid #eef1f5;text-align:right}.schooltable tr.row{cursor:pointer}.schooltable tr.row:hover td{background:#f4f7fa}.schooltable tr.sel td{background:#e9f0f8;font-weight:800}.schooltable tr.sum td{font-weight:900;border-bottom:none}.schooltable .warn{color:#c2410c;font-weight:700}.schooltable .zero{color:#aab7c6}.adminhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 8px}.adminhead h2{font-size:17px;margin:0}.adminhead select{width:auto;min-width:180px}.pill{display:inline-block;background:#e9f0f8;color:#173455;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:800}
+.login{max-width:560px}.schoolgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.schoolgrid button{background:#fff;color:#173455;border:1.5px solid #cfd8e3;padding:14px 6px;border-radius:12px;font-size:15px}.schoolgrid button:hover{border-color:#173455;background:#f4f7fa}.schoolgrid button.hq{grid-column:1/-1;background:#f4f7fa}.adminlink{display:block;margin:18px auto 0;background:none;color:#607086;font-size:13px;font-weight:700;text-decoration:underline;padding:6px}.back{background:none;color:#607086;padding:0;font-size:14px;margin-bottom:14px}.picked{font-size:24px;font-weight:900;color:#071a32;margin-bottom:14px}#code{font-size:18px;padding:14px}
+@media(max-width:480px){.schoolgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:690px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.order{grid-template-columns:1fr}.o-right{flex-direction:row;justify-content:space-between;align-items:center}.sizegrid{font-size:12px}}
 </style>
 </head>
@@ -68,12 +70,20 @@ details.sizes summary{cursor:pointer;font-weight:800}
 <header><div class="in"><div><div class="tag">COMMA CLASS · 12TH ANNIVERSARY</div><h1 id="title">分校訂單管理</h1></div><div id="hdrBtns" hidden><button class="ghost" id="refresh">↻ 重新整理</button> <button class="ghost" id="logout">登出</button></div></div></header>
 <main class="wrap">
   <section class="panel login" id="loginBox">
-    <h2 style="margin-top:0">分校登入</h2>
-    <div class="f"><label for="school">分校</label><select id="school"><option value="" disabled selected>請選擇分校</option></select></div>
-    <div class="f"><label for="code">分校密碼</label><input id="code" type="password" autocomplete="current-password" placeholder="請輸入分校密碼"></div>
-    <div class="f"><label for="staff">操作人員（選填）</label><input id="staff" placeholder="例如：王老師"><small class="muted">勾選付款／取貨時會記錄在試算表備註中。</small></div>
-    <button id="loginBtn" style="width:100%">登入</button>
-    <p class="error" id="loginErr"></p>
+    <div id="pickStep">
+      <h2 style="margin:0 0 4px">請選擇分校</h2>
+      <p class="muted" style="margin:0 0 16px">點選你的分校後輸入密碼</p>
+      <div class="schoolgrid" id="schoolGrid"></div>
+      <button class="adminlink" id="adminLink">總管理登入</button>
+    </div>
+    <div id="codeStep" hidden>
+      <button class="back" id="backBtn">‹ 重新選擇分校</button>
+      <div class="picked" id="pickedName"></div>
+      <input id="code" type="password" autocomplete="current-password" placeholder="請輸入密碼" inputmode="text">
+      <button id="loginBtn" style="width:100%;margin-top:12px">登入</button>
+      <p class="error" id="loginErr"></p>
+    </div>
+    <input type="hidden" id="school">
   </section>
 
   <section id="app" hidden>
@@ -116,14 +126,19 @@ const ADMIN='總管理';const isAdmin=()=>auth&&auth.school===ADMIN;
 $('schoolFilter').innerHTML+=SCHOOLS.map(s=>`<option>${s}</option>`).join('');
 $('schoolFilter').onchange=e=>{schoolFilter=e.target.value;render()};
 
-$('school').innerHTML+=`<option value="總管理">總管理（全部分校）</option>`+SCHOOLS.map(s=>`<option>${s}</option>`).join('');
-try{const a=JSON.parse(sessionStorage.getItem('c12staff')||'null');if(a){auth=a;$('school').value=a.school;$('staff').value=a.staff||'';load(true)}}catch(e){}
+const label=s=>s==='總部'?'總部':s;
+$('schoolGrid').innerHTML=SCHOOLS.map(s=>`<button class="${s==='總部'?'hq':''}" data-s="${s}">${s==='總部'?'總部（非班內生、貴賓、廠商）':s}</button>`).join('');
+function pick(sc){$('school').value=sc;$('pickedName').textContent=sc===ADMIN?'總管理':sc;$('pickStep').hidden=true;$('codeStep').hidden=false;$('code').value='';$('loginErr').textContent='';setTimeout(()=>$('code').focus(),50)}
+$('schoolGrid').onclick=e=>{const b=e.target.closest('button');if(b)pick(b.dataset.s)};
+$('adminLink').onclick=()=>pick(ADMIN);
+$('backBtn').onclick=()=>{$('codeStep').hidden=true;$('pickStep').hidden=false};
+try{const a=JSON.parse(sessionStorage.getItem('c12staff')||'null');if(a){auth=a;$('school').value=a.school;load(true)}}catch(e){}
 
 function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),1800)}
 
-$('loginBtn').onclick=()=>{const school=$('school').value,code=$('code').value.trim();if(!school||!code){$('loginErr').textContent='請選擇分校並輸入密碼';return}auth={school,code,staff:$('staff').value.trim()};load(true)};
+$('loginBtn').onclick=()=>{const school=$('school').value,code=$('code').value.trim();if(!school){$('backBtn').click();return}if(!code){$('loginErr').textContent='請輸入密碼';return}auth={school,code,staff:''};load(true)};
 $('code').onkeydown=e=>{if(e.key==='Enter')$('loginBtn').click()};
-$('logout').onclick=()=>{auth=null;schoolFilter='';$('adminBox').hidden=true;try{sessionStorage.removeItem('c12staff')}catch(e){}$('app').hidden=true;$('hdrBtns').hidden=true;$('loginBox').hidden=false;$('code').value='';$('title').textContent='分校訂單管理'};
+$('logout').onclick=()=>{auth=null;schoolFilter='';$('adminBox').hidden=true;try{sessionStorage.removeItem('c12staff')}catch(e){}$('app').hidden=true;$('hdrBtns').hidden=true;$('loginBox').hidden=false;$('code').value='';$('codeStep').hidden=true;$('pickStep').hidden=false;$('title').textContent='分校訂單管理'};
 $('refresh').onclick=()=>load(false);
 
 async function load(fromLogin){
@@ -138,7 +153,7 @@ async function load(fromLogin){
     $('updated').textContent='資料更新時間：'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
     render();if(!fromLogin)toast('已更新');
   }catch(e){
-    if(fromLogin){$('loginErr').textContent=e.message==='分校或密碼錯誤'?'分校或密碼錯誤，請再確認':'無法連線，請稍後再試';$('loginBox').hidden=false;$('app').hidden=true;try{sessionStorage.removeItem('c12staff')}catch(_){}}
+    if(fromLogin){$('pickedName').textContent=auth.school===ADMIN?'總管理':auth.school;$('pickStep').hidden=true;$('codeStep').hidden=false;$('loginErr').textContent=e.message==='分校或密碼錯誤'?'分校或密碼錯誤，請再確認':'無法連線，請稍後再試';$('loginBox').hidden=false;$('app').hidden=true;try{sessionStorage.removeItem('c12staff')}catch(_){}}
     else toast('更新失敗，請檢查網路');
   }finally{btn.disabled=false;btn.textContent='登入'}
 }
