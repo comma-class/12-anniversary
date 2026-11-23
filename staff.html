@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>逗點12週年｜分校訂單管理</title>
+<style>
+:root{--navy:#071a32;--blue:#173455;--orange:#f49b26;--line:#d9e0e8;--ok:#2b7a3d;--okbg:#e8f6ec}
+*{box-sizing:border-box}
+body{margin:0;background:#f2f5f8;color:#18283b;font-family:system-ui,-apple-system,'Noto Sans TC','PingFang TC',sans-serif;line-height:1.6}
+header{background:var(--navy);color:#fff;padding:18px 20px}
+header .in{max-width:1000px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.tag{color:#ffb14c;font-weight:800;letter-spacing:.1em;font-size:12px}
+h1{margin:0;font-size:22px}
+.wrap{max-width:1000px;margin:auto;padding:20px 16px 60px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px}
+label{font-size:14px;font-weight:700;display:block;margin-bottom:5px}
+input,select{width:100%;padding:11px 12px;border:1px solid #bcc9d7;border-radius:9px;font:inherit;background:#fff;color:#17283a}
+button{border:0;border-radius:10px;padding:11px 16px;font-weight:800;cursor:pointer;background:var(--blue);color:#fff;font:inherit;font-weight:800}
+button:disabled{opacity:.5;cursor:default}
+.secondary{background:#e8eef5;color:var(--blue)}
+.ghost{background:transparent;color:#fff;border:1px solid #ffffff55;padding:7px 12px;font-size:14px}
+.login{max-width:420px;margin:30px auto}
+.login .f{margin-bottom:14px}
+.error{color:#b32c2c;font-size:14px;min-height:20px;margin:6px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.stat small{color:#607086;font-size:13px;display:block}
+.stat b{font-size:22px}
+.stat .sub{font-size:13px;color:#607086}
+details.sizes{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:16px}
+details.sizes summary{cursor:pointer;font-weight:800}
+.sizegrid{display:grid;grid-template-columns:auto repeat(8,minmax(0,1fr));gap:4px;margin-top:12px;font-size:14px;text-align:center}
+.sizegrid div{padding:6px 2px;border-radius:6px;background:#f4f7fa}
+.sizegrid .h{background:transparent;color:#607086;font-weight:700}
+.sizegrid .r{background:transparent;text-align:left;font-weight:700;padding-right:8px}
+.socks{margin-top:10px;font-size:14px;color:#3a4a5e}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.toolbar input{flex:1;min-width:180px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{background:#fff;border:1px solid var(--line);color:#3a4a5e;padding:7px 12px;border-radius:999px;font-size:14px;font-weight:700}
+.chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.order{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:10px 16px;align-items:center}
+.order.done{background:#f7fbf8;border-color:#cfe8d6}
+.o-top{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.o-name{font-size:17px;font-weight:900}
+.o-meta{color:#607086;font-size:13px}
+.o-items{font-size:14px;color:#3a4a5e;margin-top:4px;white-space:pre-line}
+.o-memo{font-size:13px;color:#9d5616;margin-top:2px}
+.o-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.o-total{font-weight:900;font-size:18px;color:#d9480f}
+.toggles{display:flex;gap:8px}
+.tg{background:#fff;color:#607086;border:2px solid #cfd8e3;padding:8px 12px;border-radius:10px;font-size:14px;display:flex;align-items:center;gap:6px;min-width:96px;justify-content:center}
+.tg .box{width:18px;height:18px;border:2px solid #aab7c6;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;line-height:1}
+.tg.on{background:var(--okbg);color:var(--ok);border-color:var(--ok)}
+.tg.on .box{background:var(--ok);border-color:var(--ok);color:#fff}
+.tg.busy{opacity:.6}
+.empty{text-align:center;color:#607086;padding:30px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#18283b;color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;opacity:0;transition:.2s;pointer-events:none}
+.toast.show{opacity:1}
+.muted{color:#607086;font-size:13px}
+.schooltable{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 6px 2px;margin-bottom:16px;overflow-x:auto}.schooltable table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}.schooltable th{color:#607086;font-weight:700;text-align:right;padding:8px 10px;border-bottom:1px solid var(--line)}.schooltable th:first-child,.schooltable td:first-child{text-align:left}.schooltable td{padding:9px 10px;border-bottom:1px solid #eef1f5;text-align:right}.schooltable tr.row{cursor:pointer}.schooltable tr.row:hover td{background:#f4f7fa}.schooltable tr.sel td{background:#e9f0f8;font-weight:800}.schooltable tr.sum td{font-weight:900;border-bottom:none}.schooltable .warn{color:#c2410c;font-weight:700}.schooltable .zero{color:#aab7c6}.adminhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 8px}.adminhead h2{font-size:17px;margin:0}.adminhead select{width:auto;min-width:180px}.pill{display:inline-block;background:#e9f0f8;color:#173455;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:800}
+@media(max-width:690px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.order{grid-template-columns:1fr}.o-right{flex-direction:row;justify-content:space-between;align-items:center}.sizegrid{font-size:12px}}
+</style>
+</head>
+<body>
+<header><div class="in"><div><div class="tag">COMMA CLASS · 12TH ANNIVERSARY</div><h1 id="title">分校訂單管理</h1></div><div id="hdrBtns" hidden><button class="ghost" id="refresh">↻ 重新整理</button> <button class="ghost" id="logout">登出</button></div></div></header>
+<main class="wrap">
+  <section class="panel login" id="loginBox">
+    <h2 style="margin-top:0">分校登入</h2>
+    <div class="f"><label for="school">分校</label><select id="school"><option value="" disabled selected>請選擇分校</option></select></div>
+    <div class="f"><label for="code">分校密碼</label><input id="code" type="password" autocomplete="current-password" placeholder="請輸入分校密碼"></div>
+    <div class="f"><label for="staff">操作人員（選填）</label><input id="staff" placeholder="例如：王老師"><small class="muted">勾選付款／取貨時會記錄在試算表備註中。</small></div>
+    <button id="loginBtn" style="width:100%">登入</button>
+    <p class="error" id="loginErr"></p>
+  </section>
+
+  <section id="app" hidden>
+    <div id="adminBox" hidden>
+      <div class="adminhead"><h2>各分校總覽</h2><select id="schoolFilter"><option value="">全部分校</option></select></div>
+      <div class="schooltable" id="schoolTable"></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><small>訂單數</small><b id="sCount">0</b></div>
+      <div class="stat"><small>應收金額</small><b id="sTotal">NT$ 0</b></div>
+      <div class="stat"><small>已付款</small><b id="sPaid">0</b><div class="sub" id="sPaidAmt"></div></div>
+      <div class="stat"><small>已取貨</small><b id="sPicked">0</b><div class="sub" id="sPickedSub"></div></div>
+    </div>
+    <details class="sizes"><summary id="sizeSummary">📦 本分校商品件數統計（分貨用）</summary><div id="sizeTable"></div></details>
+    <div class="toolbar">
+      <input id="search" placeholder="搜尋姓名、電話或訂單編號">
+      <div class="chips" id="chips">
+        <button class="chip on" data-f="all">全部</button>
+        <button class="chip" data-f="unpaid">未付款</button>
+        <button class="chip" data-f="unpicked">未取貨</button>
+        <button class="chip" data-f="done">已完成</button>
+      </div>
+    </div>
+    <div id="list"></div>
+    <p class="muted" id="updated"></p>
+  </section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+/* 與前台相同的收單網址 */
+const SHEET_URL='https://script.google.com/macros/s/AKfycbywmoY5zZXfzIxN5dm8sT-dTcE8RoSM3hxXzk-5GxP4LbA9KGWfFAvstKxoOSPG2GAA/exec';
+const SCHOOLS=['青埔翱翔校','青園展翅校','文化極光校','大圓晨光校','內壢森耀校','竹北知行校','快樂騰雲校','大園參天校','園中方舟校','青埔旭日校','中壢心夢想校','青埔升大校','總部'];
+const SIZES=['130','140','S','M','L','XL','2XL','3XL'];
+const $=id=>document.getElementById(id);
+const money=n=>'NT$ '+Number(n||0).toLocaleString('zh-TW');
+const esc=x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let auth=null, orders=[], counts={}, filter='all', schoolFilter='';
+const ADMIN='總管理';const isAdmin=()=>auth&&auth.school===ADMIN;
+$('schoolFilter').innerHTML+=SCHOOLS.map(s=>`<option>${s}</option>`).join('');
+$('schoolFilter').onchange=e=>{schoolFilter=e.target.value;render()};
+
+$('school').innerHTML+=`<option value="總管理">總管理（全部分校）</option>`+SCHOOLS.map(s=>`<option>${s}</option>`).join('');
+try{const a=JSON.parse(sessionStorage.getItem('c12staff')||'null');if(a){auth=a;$('school').value=a.school;$('staff').value=a.staff||'';load(true)}}catch(e){}
+
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),1800)}
+
+$('loginBtn').onclick=()=>{const school=$('school').value,code=$('code').value.trim();if(!school||!code){$('loginErr').textContent='請選擇分校並輸入密碼';return}auth={school,code,staff:$('staff').value.trim()};load(true)};
+$('code').onkeydown=e=>{if(e.key==='Enter')$('loginBtn').click()};
+$('logout').onclick=()=>{auth=null;schoolFilter='';$('adminBox').hidden=true;try{sessionStorage.removeItem('c12staff')}catch(e){}$('app').hidden=true;$('hdrBtns').hidden=true;$('loginBox').hidden=false;$('code').value='';$('title').textContent='分校訂單管理'};
+$('refresh').onclick=()=>load(false);
+
+async function load(fromLogin){
+  const btn=$('loginBtn');btn.disabled=true;btn.textContent='登入中…';$('loginErr').textContent='';
+  try{
+    const u=SHEET_URL+'?action=list&school='+encodeURIComponent(auth.school)+'&code='+encodeURIComponent(auth.code)+'&t='+Date.now();
+    const j=await (await fetch(u)).json();
+    if(!j.ok)throw new Error(j.error||'讀取失敗');
+    orders=j.orders;counts=j.counts||{};
+    try{sessionStorage.setItem('c12staff',JSON.stringify(auth))}catch(e){}
+    $('loginBox').hidden=true;$('app').hidden=false;$('hdrBtns').hidden=false;$('title').textContent=isAdmin()?'總管理｜全部分校訂單':auth.school+'｜訂單管理';$('adminBox').hidden=!isAdmin();$('sizeSummary').textContent=isAdmin()?'📦 全部分校商品件數統計（叫貨用）':'📦 本分校商品件數統計（分貨用）';
+    $('updated').textContent='資料更新時間：'+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
+    render();if(!fromLogin)toast('已更新');
+  }catch(e){
+    if(fromLogin){$('loginErr').textContent=e.message==='分校或密碼錯誤'?'分校或密碼錯誤，請再確認':'無法連線，請稍後再試';$('loginBox').hidden=false;$('app').hidden=true;try{sessionStorage.removeItem('c12staff')}catch(_){}}
+    else toast('更新失敗，請檢查網路');
+  }finally{btn.disabled=false;btn.textContent='登入'}
+}
+
+function render(){
+  if(isAdmin())renderSchoolTable();
+  const scope=isAdmin()&&schoolFilter?orders.filter(o=>o.school===schoolFilter):orders;
+  const n=scope.length,total=scope.reduce((a,o)=>a+(o.total||0),0);
+  const paid=scope.filter(o=>o.paid),picked=scope.filter(o=>o.picked);
+  $('sCount').textContent=n;$('sTotal').textContent=money(total);
+  $('sPaid').textContent=`${paid.length} / ${n}`;$('sPaidAmt').textContent='已收 '+money(paid.reduce((a,o)=>a+(o.total||0),0))+'｜未收 '+money(total-paid.reduce((a,o)=>a+(o.total||0),0));
+  $('sPicked').textContent=`${picked.length} / ${n}`;$('sPickedSub').textContent=n-picked.length?`尚有 ${n-picked.length} 筆未取貨`:'全部取貨完成 🎉';
+  $('sizeTable').innerHTML=`<div class="sizegrid"><div class="h"></div>${SIZES.map(s=>`<div class="h">${s}</div>`).join('')}
+    <div class="r">短 T</div>${SIZES.map(s=>`<div>${counts['短T-'+s]||0}</div>`).join('')}
+    <div class="r">帽 T</div>${SIZES.map(s=>`<div>${counts['帽T-'+s]||0}</div>`).join('')}</div>
+    <div class="socks">無限款襪子：<b>${counts['無限款襪']||0}</b> 雙｜逗點人款襪子：<b>${counts['逗點人款襪']||0}</b> 雙｜（含組合 ${counts['組合數']||0} 組）</div>`;
+  const q=$('search').value.trim().toLowerCase();
+  const list=scope.filter(o=>{
+    if(filter==='unpaid'&&o.paid)return false;if(filter==='unpicked'&&o.picked)return false;if(filter==='done'&&!(o.paid&&o.picked))return false;
+    return !q||[o.name,o.phone,o.orderId].some(x=>String(x).toLowerCase().includes(q));
+  });
+  $('list').innerHTML=list.length?list.map(o=>`<div class="order ${o.paid&&o.picked?'done':''}">
+    <div><div class="o-top">${isAdmin()?`<span class="pill">${esc(o.school)}</span>`:''}<span class="o-name">${esc(o.name)}</span><span class="o-meta">${esc(o.phone)}｜${esc(o.orderId)}｜${esc(o.time)}</span></div>
+      <div class="o-items">${esc(o.items)}</div>${o.memo?`<div class="o-memo">備註：${esc(o.memo)}</div>`:''}</div>
+    <div class="o-right"><div class="o-total">${o.total==null?'待公布':money(o.total)}</div>
+      <div class="toggles">
+        <button class="tg ${o.paid?'on':''}" data-id="${esc(o.orderId)}" data-f="paid"><span class="box">${o.paid?'✓':''}</span>${o.paid?'已付款':'未付款'}</button>
+        <button class="tg ${o.picked?'on':''}" data-id="${esc(o.orderId)}" data-f="picked"><span class="box">${o.picked?'✓':''}</span>${o.picked?'已取貨':'未取貨'}</button>
+      </div></div></div>`).join(''):`<div class="empty">${scope.length?'沒有符合條件的訂單':'目前還沒有這間分校的訂單'}</div>`;
+}
+
+function renderSchoolTable(){
+  const rows=SCHOOLS.map(s=>{const os=orders.filter(o=>o.school===s);const t=os.reduce((a,o)=>a+(o.total||0),0),pd=os.filter(o=>o.paid);return {s,n:os.length,t,paid:pd.reduce((a,o)=>a+(o.total||0),0),unpaid:os.length-pd.length,unpicked:os.filter(o=>!o.picked).length}});
+  const sum=rows.reduce((a,r)=>({n:a.n+r.n,t:a.t+r.t,paid:a.paid+r.paid,unpaid:a.unpaid+r.unpaid,unpicked:a.unpicked+r.unpicked}),{n:0,t:0,paid:0,unpaid:0,unpicked:0});
+  const num=(v,warn)=>v?`<span class="${warn?'warn':''}">${v}</span>`:'<span class="zero">0</span>';
+  $('schoolTable').innerHTML=`<table><thead><tr><th>分校</th><th>訂單數</th><th>應收金額</th><th>已收金額</th><th>未付款</th><th>未取貨</th></tr></thead><tbody>
+  ${rows.map(r=>`<tr class="row ${schoolFilter===r.s?'sel':''}" data-s="${r.s}"><td>${r.s}</td><td>${num(r.n)}</td><td>${r.t?money(r.t):'<span class="zero">—</span>'}</td><td>${r.paid?money(r.paid):'<span class="zero">—</span>'}</td><td>${num(r.unpaid,1)}</td><td>${num(r.unpicked,1)}</td></tr>`).join('')}
+  <tr class="row sum ${schoolFilter===''?'sel':''}" data-s=""><td>全部合計</td><td>${sum.n}</td><td>${money(sum.t)}</td><td>${money(sum.paid)}</td><td>${sum.unpaid}</td><td>${sum.unpicked}</td></tr></tbody></table>`;
+  $('schoolFilter').value=schoolFilter;
+}
+$('schoolTable').onclick=e=>{const tr=e.target.closest('tr.row');if(!tr)return;schoolFilter=tr.dataset.s;render();$('list').scrollIntoView({behavior:'smooth',block:'start'})};
+$('search').oninput=render;
+$('chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;filter=b.dataset.f;[...$('chips').children].forEach(c=>c.classList.toggle('on',c===b));render()};
+
+$('list').onclick=async e=>{
+  const b=e.target.closest('.tg');if(!b||b.classList.contains('busy'))return;
+  const o=orders.find(x=>x.orderId===b.dataset.id),f=b.dataset.f;if(!o)return;
+  const next=!o[f];
+  if(!next&&!confirmUndo(b,f))return;
+  o[f]=next;b.classList.add('busy');render();
+  try{
+    const r=await fetch(SHEET_URL,{method:'POST',body:JSON.stringify({action:'update',school:auth.school,code:auth.code,staff:auth.staff,orderId:o.orderId,field:f,value:next})});
+    const j=await r.json();if(!j.ok)throw new Error(j.error);
+    toast(`${o.name}：${j.value}`);
+  }catch(err){o[f]=!next;render();toast('更新失敗，請再試一次')}
+};
+
+/* 取消勾選需要再按一次確認，避免誤觸 */
+function confirmUndo(b,f){
+  if(b.dataset.armed){return true}
+  b.dataset.armed='1';const old=b.innerHTML;b.innerHTML='再按一次取消';b.style.borderColor='#b32c2c';b.style.color='#b32c2c';
+  setTimeout(()=>{if(b.isConnected&&b.dataset.armed){delete b.dataset.armed;b.innerHTML=old;b.style.borderColor='';b.style.color=''}},2500);
+  return false;
+}
+</script>
+</body>
+</html>
