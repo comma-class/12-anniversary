@@ -63,7 +63,8 @@ details.sizes summary{cursor:pointer;font-weight:800}
 .schooltable{background:#fff;border:1px solid var(--line);border-radius:14px;padding:6px 6px 2px;margin-bottom:16px;overflow-x:auto}.schooltable table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}.schooltable th{color:#607086;font-weight:700;text-align:right;padding:8px 10px;border-bottom:1px solid var(--line)}.schooltable th:first-child,.schooltable td:first-child{text-align:left}.schooltable td{padding:9px 10px;border-bottom:1px solid #eef1f5;text-align:right}.schooltable tr.row{cursor:pointer}.schooltable tr.row:hover td{background:#f4f7fa}.schooltable tr.sel td{background:#e9f0f8;font-weight:800}.schooltable tr.sum td{font-weight:900;border-bottom:none}.schooltable .warn{color:#c2410c;font-weight:700}.schooltable .zero{color:#aab7c6}.adminhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 8px}.adminhead h2{font-size:17px;margin:0}.adminhead select{width:auto;min-width:180px}.pill{display:inline-block;background:#e9f0f8;color:#173455;border-radius:999px;padding:1px 9px;font-size:12px;font-weight:800}
 .login{max-width:560px}.schoolgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.schoolgrid button{background:#fff;color:#173455;border:1.5px solid #cfd8e3;padding:14px 6px;border-radius:12px;font-size:15px}.schoolgrid button:hover{border-color:#173455;background:#f4f7fa}.schoolgrid button.hq{grid-column:1/-1;background:#f4f7fa}.adminlink{display:block;margin:18px auto 0;background:none;color:#607086;font-size:13px;font-weight:700;text-decoration:underline;padding:6px}.back{background:none;color:#607086;padding:0;font-size:14px;margin-bottom:14px}.picked{font-size:24px;font-weight:900;color:#071a32;margin-bottom:14px}#code{font-size:18px;padding:14px}
 @media(max-width:480px){.schoolgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:690px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.order{grid-template-columns:1fr}.o-right{flex-direction:row;justify-content:space-between;align-items:center}.sizegrid{font-size:12px}}
+.payline{font-size:12.5px;color:#2b7a3d;font-weight:700;text-align:right}.modal{position:fixed;inset:0;background:#071a3299;display:flex;align-items:center;justify-content:center;padding:16px;z-index:20}.modal[hidden]{display:none}.modal-box{background:#fff;border-radius:16px;padding:22px;width:100%;max-width:400px}.modal .f{margin-bottom:14px}.paym{display:grid;grid-template-columns:1fr 1fr;gap:10px}.paym button{background:#fff;color:#173455;border:2px solid #cfd8e3;padding:12px;border-radius:12px;font-size:16px}.paym button.on{border-color:#173455;background:#e9f0f8}.m-actions{display:flex;gap:10px;justify-content:flex-end}.m-actions button{min-width:110px}#last5{font-size:20px;letter-spacing:.3em}.report[open] summary{margin-bottom:10px}.rep-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.rep-top input{width:auto}.rep-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}.rep-stats div{background:#f4f7fa;border-radius:10px;padding:10px 12px}.rep-stats small{display:block;color:#607086;font-size:12.5px}.rep-stats b{font-size:15px}.rep-stats .tot{background:#fff1e8}.rep-stats .tot b{color:#c2410c}.rep-list{overflow-x:auto}.rep-list table{width:100%;border-collapse:collapse;font-size:14px;min-width:420px}.rep-list th{color:#607086;text-align:left;font-weight:700;padding:6px 8px;border-bottom:1px solid var(--line)}.rep-list td{padding:7px 8px;border-bottom:1px solid #eef1f5}
+@media(max-width:690px){.rep-stats{grid-template-columns:1fr}.payline{text-align:left}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.order{grid-template-columns:1fr}.o-right{flex-direction:row;justify-content:space-between;align-items:center}.sizegrid{font-size:12px}}
 </style>
 </head>
 <body>
@@ -98,6 +99,9 @@ details.sizes summary{cursor:pointer;font-weight:800}
       <div class="stat"><small>已取貨</small><b id="sPicked">0</b><div class="sub" id="sPickedSub"></div></div>
     </div>
     <details class="sizes"><summary id="sizeSummary">📦 本分校商品件數統計（分貨用）</summary><div id="sizeTable"></div></details>
+    <details class="sizes report" open><summary>📋 收款日報（每日回報用）</summary>
+      <div class="rep-top"><label for="repDate" style="margin:0">日期</label><input type="date" id="repDate"><button class="secondary" id="repCopy">複製日報</button></div>
+      <div class="rep-stats" id="repStats"></div><div class="rep-list" id="repList"></div></details>
     <div class="toolbar">
       <input id="search" placeholder="搜尋姓名、電話或訂單編號">
       <div class="chips" id="chips">
@@ -111,6 +115,14 @@ details.sizes summary{cursor:pointer;font-weight:800}
     <p class="muted" id="updated"></p>
   </section>
 </main>
+<div class="modal" id="payModal" hidden><div class="modal-box">
+  <h3 style="margin:0 0 2px">登記收款</h3><p class="muted" style="margin:0 0 14px"><b id="payWho"></b>｜應收 <b id="payAmt"></b></p>
+  <div class="f"><label for="payDate">收款日</label><input type="date" id="payDate"></div>
+  <div class="f"><label>收款方式</label><div class="paym" id="payMethods"><button type="button" data-m="現金">💵 現金</button><button type="button" data-m="匯款">🏦 匯款</button></div></div>
+  <div class="f" id="last5Box" hidden><label for="last5">匯款帳號末五碼</label><input id="last5" inputmode="numeric" maxlength="5" placeholder="例如：12345" autocomplete="off"></div>
+  <p class="error" id="payErr"></p>
+  <div class="m-actions"><button class="secondary" id="payCancel">取消</button><button id="payOk">確認收款</button></div>
+</div></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -160,6 +172,7 @@ async function load(fromLogin){
 
 function render(){
   if(isAdmin())renderSchoolTable();
+  renderReport();
   const scope=isAdmin()&&schoolFilter?orders.filter(o=>o.school===schoolFilter):orders;
   const n=scope.length,total=scope.reduce((a,o)=>a+(o.total||0),0);
   const paid=scope.filter(o=>o.paid),picked=scope.filter(o=>o.picked);
@@ -182,7 +195,7 @@ function render(){
       <div class="toggles">
         <button class="tg ${o.paid?'on':''}" data-id="${esc(o.orderId)}" data-f="paid"><span class="box">${o.paid?'✓':''}</span>${o.paid?'已付款':'未付款'}</button>
         <button class="tg ${o.picked?'on':''}" data-id="${esc(o.orderId)}" data-f="picked"><span class="box">${o.picked?'✓':''}</span>${o.picked?'已取貨':'未取貨'}</button>
-      </div></div></div>`).join(''):`<div class="empty">${scope.length?'沒有符合條件的訂單':'目前還沒有這間分校的訂單'}</div>`;
+      </div>${o.paid&&o.payMethod?`<div class="payline">💰 ${esc(o.payDate.slice(5))} 收款｜${esc(o.payMethod)}${o.last5?' 末五碼 '+esc(o.last5):''}</div>`:''}</div></div>`).join(''):`<div class="empty">${scope.length?'沒有符合條件的訂單':'目前還沒有這間分校的訂單'}</div>`;
 }
 
 function renderSchoolTable(){
@@ -202,14 +215,62 @@ $('list').onclick=async e=>{
   const b=e.target.closest('.tg');if(!b||b.classList.contains('busy'))return;
   const o=orders.find(x=>x.orderId===b.dataset.id),f=b.dataset.f;if(!o)return;
   const next=!o[f];
+  if(f==='paid'&&next){openPay(o);return}
   if(!next&&!confirmUndo(b,f))return;
-  o[f]=next;b.classList.add('busy');render();
-  try{
-    const r=await fetch(SHEET_URL,{method:'POST',body:JSON.stringify({action:'update',school:auth.school,code:auth.code,staff:auth.staff,orderId:o.orderId,field:f,value:next})});
-    const j=await r.json();if(!j.ok)throw new Error(j.error);
-    toast(`${o.name}：${j.value}`);
-  }catch(err){o[f]=!next;render();toast('更新失敗，請再試一次')}
+  sendUpdate(o,f,next,{});
 };
+async function sendUpdate(o,f,next,extra){
+  const prev={...o};
+  o[f]=next;if(f==='paid'){Object.assign(o,next?extra:{payDate:'',payMethod:'',last5:''})}
+  render();
+  try{
+    const r=await fetch(SHEET_URL,{method:'POST',body:JSON.stringify({action:'update',school:auth.school,code:auth.code,staff:auth.staff,orderId:o.orderId,field:f,value:next,...extra})});
+    const j=await r.json();if(!j.ok)throw new Error(j.error);
+    if(f==='paid'&&next){o.payDate=j.payDate||o.payDate}
+    toast(`${o.name}：${j.value}`);render();return true;
+  }catch(err){Object.assign(o,prev);render();toast(err.message&&err.message.length<20?err.message:'更新失敗，請再試一次');return false}
+}
+
+/* ===== 收款登記視窗 ===== */
+let payTarget=null,payMethod='';
+const today=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())};
+function openPay(o){
+  payTarget=o;payMethod='';
+  $('payWho').textContent=o.name;$('payAmt').textContent=o.total==null?'待公布':money(o.total);
+  $('payDate').value=today();$('payDate').max=today();$('last5').value='';$('payErr').textContent='';
+  [...$('payMethods').children].forEach(x=>x.classList.remove('on'));$('last5Box').hidden=true;
+  $('payModal').hidden=false;
+}
+$('payMethods').onclick=e=>{const b=e.target.closest('button');if(!b)return;payMethod=b.dataset.m;[...$('payMethods').children].forEach(x=>x.classList.toggle('on',x===b));$('last5Box').hidden=payMethod!=='匯款';if(payMethod==='匯款')setTimeout(()=>$('last5').focus(),50)};
+$('last5').oninput=e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,5)};
+$('payCancel').onclick=()=>{$('payModal').hidden=true};
+$('payModal').onclick=e=>{if(e.target.id==='payModal')$('payModal').hidden=true};
+$('payOk').onclick=async()=>{
+  const d=$('payDate').value,l5=$('last5').value;
+  if(!d){$('payErr').textContent='請選擇收款日';return}
+  if(!payMethod){$('payErr').textContent='請選擇現金或匯款';return}
+  if(payMethod==='匯款'&&!/^\d{5}$/.test(l5)){$('payErr').textContent='請輸入匯款帳號末五碼（5 位數字）';return}
+  const btn=$('payOk');btn.disabled=true;btn.textContent='儲存中…';
+  const ok=await sendUpdate(payTarget,'paid',true,{payDate:d.replace(/-/g,'/'),payMethod,last5:payMethod==='匯款'?l5:''});
+  btn.disabled=false;btn.textContent='確認收款';
+  if(ok)$('payModal').hidden=true;else $('payErr').textContent='儲存失敗，請再試一次';
+};
+
+/* ===== 收款日報 ===== */
+$('repDate').value=today();
+$('repDate').onchange=renderReport;
+function renderReport(){
+  const d=($('repDate').value||today()).replace(/-/g,'/');
+  const scope=isAdmin()&&schoolFilter?orders.filter(o=>o.school===schoolFilter):orders;
+  const rows=scope.filter(o=>o.paid&&o.payDate===d);
+  const cash=rows.filter(o=>o.payMethod==='現金'),tr=rows.filter(o=>o.payMethod==='匯款');
+  const sum=a=>a.reduce((x,o)=>x+(o.total||0),0);
+  $('repStats').innerHTML=`<div><small>現金</small><b>${cash.length} 筆｜${money(sum(cash))}</b></div><div><small>匯款</small><b>${tr.length} 筆｜${money(sum(tr))}</b></div><div class="tot"><small>當日合計</small><b>${rows.length} 筆｜${money(sum(rows))}</b></div>`;
+  $('repList').innerHTML=rows.length?`<table><thead><tr>${isAdmin()?'<th>分校</th>':''}<th>姓名</th><th>訂單編號</th><th>方式</th><th>末五碼</th><th style="text-align:right">金額</th></tr></thead><tbody>${rows.map(o=>`<tr>${isAdmin()?`<td>${esc(o.school)}</td>`:''}<td>${esc(o.name)}</td><td>${esc(o.orderId)}</td><td>${esc(o.payMethod)}</td><td>${esc(o.last5||'—')}</td><td style="text-align:right">${money(o.total)}</td></tr>`).join('')}</tbody></table>`:'<p class="muted" style="text-align:center;margin:12px 0">這一天沒有收款紀錄</p>';
+  const title=isAdmin()?(schoolFilter||'全部分校'):auth.school;
+  window._report=[`【逗點12週年 收款日報】`,`${title}｜${d}`,'',`現金：${cash.length} 筆 ${money(sum(cash))}`,`匯款：${tr.length} 筆 ${money(sum(tr))}`,`合計：${rows.length} 筆 ${money(sum(rows))}`,...(rows.length?['','明細：',...rows.map((o,i)=>`${i+1}. ${isAdmin()&&!schoolFilter?o.school+'｜':''}${o.name}｜${o.orderId}｜${money(o.total)}｜${o.payMethod}${o.last5?'（末五碼 '+o.last5+'）':''}`)]:[])].join('\n');
+}
+$('repCopy').onclick=async()=>{try{await navigator.clipboard.writeText(window._report||'');toast('已複製日報，可直接貼到 LINE')}catch{toast('無法複製，請改用截圖')}};
 
 /* 取消勾選需要再按一次確認，避免誤觸 */
 function confirmUndo(b,f){
