@@ -16,7 +16,7 @@ const PREORDER_END=new Date('2026-12-14T00:00:00+08:00'); // 12/14（一）起�
 /* ============================================================== */
 const images=["img/1_a91f48e3.jpg","img/2_f97ce864.jpg"];
 const sizes=['130','140','S','M','L','XL','2XL','3XL'];
-const items=[{id:'combo',name:'12週年限定組合｜短 T＋帽 T＋無限款襪子＋逗點人款襪子',img:'img/combo.jpg',combo:true},{id:'tee',name:'12週年紀念短 T（白）',img:images[0],size:true},{id:'hoodie',name:'12週年紀念帽 T（丈青）',img:images[1],size:true},{id:'sock1',name:'襪子（無限款）',img:'img/4_c0ab7b22.jpg'},{id:'sock2',name:'襪子（逗點人款）',img:'img/5_72a9d306.jpg'}];
+const items=[{id:'combo',name:'12週年限定組合｜短 T＋帽 T＋無限款襪子＋逗點人款襪子',img:'img/逗點12週年紀念組合禮包.png',combo:true},{id:'tee',name:'12週年紀念短 T（白）',img:images[0],size:true},{id:'hoodie',name:'12週年紀念帽 T（丈青）',img:images[1],size:true},{id:'sock1',name:'襪子（無限款）',img:'img/4_c0ab7b22.jpg'},{id:'sock2',name:'襪子（逗點人款）',img:'img/5_72a9d306.jpg'}];
 let cart=[];
 const isPre=()=>new Date()<PREORDER_END;
 function money(n){return 'NT$ '+Number(n).toLocaleString('zh-TW')}
