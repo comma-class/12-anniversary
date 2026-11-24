@@ -128,7 +128,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;width:100
 /* 與前台相同的收單網址 */
 const SHEET_URL='https://script.google.com/macros/s/AKfycby2-ofyhdvl4cVOiuXezXwRleN1qDDqPrNqjdO_ZhS8DBepl0J4xbtqryXSIMasNo8Rkw/exec';
 const SCHOOLS=['青埔翱翔校','青園展翅校','文化極光校','大圓晨光校','內壢森耀校','竹北知行校','快樂騰雲校','大園參天校','園中方舟校','青埔旭日校','中壢心夢想校','青埔升大校','總部'];
-const SIZES=['130','140','XS','S','M','L','XL','2XL','3XL'];const SZL={'130':'YM','140':'YL'};
+const SIZES=['YM','YL','XS','S','M','L','XL','2XL','3XL'];const SZL={};
 const $=id=>document.getElementById(id);
 const money=n=>'NT$ '+Number(n||0).toLocaleString('zh-TW');
 const esc=x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -181,9 +181,9 @@ function render(){
     <div class="r">短 T</div>${SIZES.map(s=>`<div>${counts['短T-'+s]||0}</div>`).join('')}
     <div class="r">帽 T</div>${SIZES.map(s=>`<div>${counts['帽T-'+s]||0}</div>`).join('')}</div>
     <div class="sizegrid" style="grid-template-columns:auto repeat(3,minmax(0,1fr));margin-top:14px"><div class="h"></div><div class="h">兒童款</div><div class="h">成人款</div><div class="h">合計</div>
-    <div class="r">無限款襪</div><div>${counts['無限款襪-兒童']||0}</div><div>${counts['無限款襪-成人']||0}</div><div>${counts['無限款襪']||0}</div>
-    <div class="r">逗點人款襪</div><div>${counts['逗點人款襪-兒童']||0}</div><div>${counts['逗點人款襪-成人']||0}</div><div>${counts['逗點人款襪']||0}</div></div>
-    <div class="socks">逗點人存錢筒：<b>${counts['存錢筒']||0}</b> 個｜（以上含組合 ${counts['組合數']||0} 組）${(counts['無限款襪']||0)+(counts['逗點人款襪']||0)>(counts['無限款襪-兒童']||0)+(counts['無限款襪-成人']||0)+(counts['逗點人款襪-兒童']||0)+(counts['逗點人款襪-成人']||0)?'<br><span class="muted">※ 部分早期測試訂單沒有襪子款式資料，只計入合計。</span>':''}</div>`;
+    <div class="r">無限款襪</div><div>${counts['無限款襪-兒童']||0}</div><div>${counts['無限款襪-成人']||0}</div><div>${(counts['無限款襪-兒童']||0)+(counts['無限款襪-成人']||0)}</div>
+    <div class="r">逗點人款襪</div><div>${counts['逗點人款襪-兒童']||0}</div><div>${counts['逗點人款襪-成人']||0}</div><div>${(counts['逗點人款襪-兒童']||0)+(counts['逗點人款襪-成人']||0)}</div></div>
+    <div class="socks">逗點人存錢筒：<b>${counts['存錢筒']||0}</b> 個｜（以上含組合 ${counts['組合數']||0} 組）</div>`;
   const q=$('search').value.trim().toLowerCase();
   const list=scope.filter(o=>{
     if(filter==='unpaid'&&o.paid)return false;if(filter==='unpicked'&&o.picked)return false;if(filter==='done'&&!(o.paid&&o.picked))return false;
