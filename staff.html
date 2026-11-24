@@ -31,7 +31,7 @@ button:disabled{opacity:.5;cursor:default}
 .stat .sub{font-size:13px;color:#607086}
 details.sizes{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:16px}
 details.sizes summary{cursor:pointer;font-weight:800}
-.sizegrid{display:grid;grid-template-columns:auto repeat(8,minmax(0,1fr));gap:4px;margin-top:12px;font-size:14px;text-align:center}
+.sizegrid{display:grid;grid-template-columns:auto repeat(9,minmax(0,1fr));gap:4px;margin-top:12px;font-size:14px;text-align:center}
 .sizegrid div{padding:6px 2px;border-radius:6px;background:#f4f7fa}
 .sizegrid .h{background:transparent;color:#607086;font-weight:700}
 .sizegrid .r{background:transparent;text-align:left;font-weight:700;padding-right:8px}
@@ -128,7 +128,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;width:100
 /* 與前台相同的收單網址 */
 const SHEET_URL='https://script.google.com/macros/s/AKfycby2-ofyhdvl4cVOiuXezXwRleN1qDDqPrNqjdO_ZhS8DBepl0J4xbtqryXSIMasNo8Rkw/exec';
 const SCHOOLS=['青埔翱翔校','青園展翅校','文化極光校','大圓晨光校','內壢森耀校','竹北知行校','快樂騰雲校','大園參天校','園中方舟校','青埔旭日校','中壢心夢想校','青埔升大校','總部'];
-const SIZES=['130','140','S','M','L','XL','2XL','3XL'];
+const SIZES=['130','140','XS','S','M','L','XL','2XL','3XL'];const SZL={'130':'YM<br><small>130</small>','140':'YL<br><small>140</small>'};
 const $=id=>document.getElementById(id);
 const money=n=>'NT$ '+Number(n||0).toLocaleString('zh-TW');
 const esc=x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -177,7 +177,7 @@ function render(){
   $('sCount').textContent=n;$('sTotal').textContent=money(total);
   $('sPaid').textContent=`${paid.length} / ${n}`;$('sPaidAmt').textContent='已收 '+money(paid.reduce((a,o)=>a+(o.total||0),0))+'｜未收 '+money(total-paid.reduce((a,o)=>a+(o.total||0),0));
   $('sPicked').textContent=`${picked.length} / ${n}`;$('sPickedSub').textContent=n-picked.length?`尚有 ${n-picked.length} 筆未取貨`:'全部取貨完成 🎉';
-  $('sizeTable').innerHTML=`<div class="sizegrid"><div class="h"></div>${SIZES.map(s=>`<div class="h">${s}</div>`).join('')}
+  $('sizeTable').innerHTML=`<div class="sizegrid"><div class="h"></div>${SIZES.map(s=>`<div class="h">${SZL[s]||s}</div>`).join('')}
     <div class="r">短 T</div>${SIZES.map(s=>`<div>${counts['短T-'+s]||0}</div>`).join('')}
     <div class="r">帽 T</div>${SIZES.map(s=>`<div>${counts['帽T-'+s]||0}</div>`).join('')}</div>
     <div class="sizegrid" style="grid-template-columns:auto repeat(3,minmax(0,1fr));margin-top:14px"><div class="h"></div><div class="h">兒童款</div><div class="h">成人款</div><div class="h">合計</div>
