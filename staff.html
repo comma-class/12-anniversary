@@ -180,7 +180,10 @@ function render(){
   $('sizeTable').innerHTML=`<div class="sizegrid"><div class="h"></div>${SIZES.map(s=>`<div class="h">${s}</div>`).join('')}
     <div class="r">短 T</div>${SIZES.map(s=>`<div>${counts['短T-'+s]||0}</div>`).join('')}
     <div class="r">帽 T</div>${SIZES.map(s=>`<div>${counts['帽T-'+s]||0}</div>`).join('')}</div>
-    <div class="socks">無限款襪子：<b>${counts['無限款襪']||0}</b> 雙｜逗點人款襪子：<b>${counts['逗點人款襪']||0}</b> 雙｜（含組合 ${counts['組合數']||0} 組）</div>`;
+    <div class="sizegrid" style="grid-template-columns:auto repeat(3,minmax(0,1fr));margin-top:14px"><div class="h"></div><div class="h">兒童款</div><div class="h">成人款</div><div class="h">合計</div>
+    <div class="r">無限款襪</div><div>${counts['無限款襪-兒童']||0}</div><div>${counts['無限款襪-成人']||0}</div><div>${counts['無限款襪']||0}</div>
+    <div class="r">逗點人款襪</div><div>${counts['逗點人款襪-兒童']||0}</div><div>${counts['逗點人款襪-成人']||0}</div><div>${counts['逗點人款襪']||0}</div></div>
+    <div class="socks">逗點人存錢筒：<b>${counts['存錢筒']||0}</b> 個｜（以上含組合 ${counts['組合數']||0} 組）${(counts['無限款襪']||0)+(counts['逗點人款襪']||0)>(counts['無限款襪-兒童']||0)+(counts['無限款襪-成人']||0)+(counts['逗點人款襪-兒童']||0)+(counts['逗點人款襪-成人']||0)?'<br><span class="muted">※ 部分早期測試訂單沒有襪子款式資料，只計入合計。</span>':''}</div>`;
   const q=$('search').value.trim().toLowerCase();
   const list=scope.filter(o=>{
     if(filter==='unpaid'&&o.paid)return false;if(filter==='unpicked'&&o.picked)return false;if(filter==='done'&&!(o.paid&&o.picked))return false;
