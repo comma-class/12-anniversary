@@ -198,7 +198,7 @@ $id('tfSend').onclick=async()=>{
     const r=await fetch(SHEET_URL,{method:'POST',body:JSON.stringify({action:'report',orderId:curOrder.orderId,phone:curOrder.phone,name:curOrder.name,payDate:d.replace(/-/g,'/'),amount:Number(a),last5:l})});
     const j=await r.json();if(!j.ok)throw new Error(j.error||'送出失敗');
     $id('tvPanel').hidden=true;$id('tvAlert').hidden=true;$id('tvIcon').hidden=true;$id('tvTitle').textContent='匯款資料已送出';
-    $id('payDone').hidden=false;$id('payDoneMsg').innerHTML=`<span class="nw">匯款日期 ${d.replace(/-/g,'/')}</span>｜<span class="nw">金額 NT$ ${Number(a).toLocaleString()}</span>｜<span class="nw">末五碼 ${l}</span><br>確認入帳後，訂單即正式成立。`;
+    $id('payDone').hidden=false;$id('payDoneMsg').innerHTML=`<span class="nw">匯款日期 ${d.replace(/-/g,'/')}</span>｜<span class="nw">金額 NT$ ${Number(a).toLocaleString()}</span>｜<span class="nw">末五碼 ${l}</span><br>確認入帳後，訂單即正式成立，並會寄送付款完成通知信。`;
     $id('payDone').scrollIntoView({behavior:'smooth',block:'center'});
   }catch(e){err.textContent=(e.message&&e.message.length<40?e.message:'送出失敗')+'，請稍後再試一次。'}
   finally{b.disabled=false;b.textContent='送出匯款資料'}
