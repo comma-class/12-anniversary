@@ -80,7 +80,7 @@ document.getElementById('school').addEventListener('change',e=>{const sc=e.targe
 renderProducts();renderCart();
 document.getElementById('products').addEventListener('change',e=>{if(e.target.tagName==='SELECT'){e.target.classList.remove('need');const art=e.target.closest('.product');const er=art&&art.querySelector('.error');if(er)er.textContent=''}});
 /* ===== 尺寸表 ===== */
-const CHARTS={tee:'img/size-tee.png',hoodie:'img/size-hoodie-v2.png'};
+const CHARTS={tee:'img/size-tee-v2.png',hoodie:'img/size-hoodie-v3.png'};
 function openChart(t){document.getElementById('chartImg').src=CHARTS[t];document.getElementById('chartTitle').textContent=t==='tee'?'12週年紀念短 T（白）尺寸表':'12週年紀念帽 T（丈青）尺寸表';document.getElementById('chartModal').hidden=false}
 function closeChart(){document.getElementById('chartModal').hidden=true}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeChart()});
