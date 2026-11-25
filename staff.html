@@ -157,7 +157,7 @@ $('schoolFilter').innerHTML+=SCHOOLS.map(s=>`<option>${s}</option>`).join('');
 $('schoolFilter').onchange=e=>{schoolFilter=e.target.value;render()};
 
 const label=s=>s==='總部'?'總部':s;
-$('schoolGrid').innerHTML=SCHOOLS.map(s=>`<button class="${s==='總部'?'hq':''}" data-s="${s}">${s==='總部'?'總部（非班內生、貴賓、廠商）':s}</button>`).join('');
+$('schoolGrid').innerHTML=SCHOOLS.map(s=>`<button class="${s==='總部'?'hq':''}" data-s="${s}">${s==='總部'?'總部（非班內生）':s}</button>`).join('');
 function pick(sc){$('school').value=sc;$('pickedName').textContent=sc===ADMIN?'總管理':sc;$('pickStep').hidden=true;$('codeStep').hidden=false;$('code').value='';$('loginErr').textContent='';setTimeout(()=>$('code').focus(),50)}
 $('schoolGrid').onclick=e=>{const b=e.target.closest('button');if(b)pick(b.dataset.s)};
 $('adminLink').onclick=()=>pick(ADMIN);
