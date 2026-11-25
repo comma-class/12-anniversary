@@ -105,7 +105,7 @@ const SIZE_LABEL={'130':'YM（兒童款）','140':'YL（兒童款）'};const siz
 const PH='<option value="" selected disabled>— 請選擇 —</option>';
 const sizeOpts=()=>PH+sizes.map(s=>`<option value="${s}">${sizeLabel(s)}</option>`).join('');
 const chartBtn=t=>`<button type="button" class="chart-btn" onclick="openChart('${t}')">📏 尺寸表</button>`;
-const items=[{id:'combo',name:'12週年限定組合｜短 T＋帽 T＋無限款襪子＋逗點人款襪子',img:'img/combo-v5.jpg',combo:true},{id:'tee',name:'12週年紀念短 T（白）',img:'img/tee-v2.jpg',size:true},{id:'hoodie',name:'12週年紀念帽 T（丈青）',img:'img/hoodie-v2.jpg',size:true},{id:'sock1',name:'襪子（無限款）',img:'img/sock-infinity-v2.jpg',sock:true},{id:'sock2',name:'襪子（逗點人款）',img:'img/sock-comma-v2.jpg',sock:true},{id:'box',name:'逗點人存錢筒（附顏料）',img:'img/moneybox-v2.jpg',desc:'流體彩繪 DIY 存錢筒，附多色顏料。<br>挑選喜歡的顏色，親手淋出獨一無二的逗點人！'},{id:'oil',name:'逗點檜木精油',img:'img/hinoki-oil.jpg',desc:'每一間逗點教室，都有一股熟悉的檜木香氣。<br>The Scent of COMMA，將屬於逗點的氣味融入日常，讓這份熟悉與溫暖，在生活中延續。'}];
+const items=[{id:'combo',name:'12週年限定組合｜短 T＋帽 T＋無限款襪子＋逗點人款襪子',img:'img/combo-v5.jpg',combo:true},{id:'tee',name:'12週年紀念短 T（白）',img:'img/tee-v2.jpg',size:true},{id:'hoodie',name:'12週年紀念帽 T（丈青）',img:'img/hoodie-v2.jpg',size:true},{id:'sock1',name:'襪子（無限款）',img:'img/sock-infinity-v2.jpg',sock:true},{id:'sock2',name:'襪子（逗點人款）',img:'img/sock-comma-v2.jpg',sock:true},{id:'box',name:'逗點人存錢筒（附顏料）',img:'img/moneybox-v2.jpg',desc:'流體彩繪 DIY 存錢筒，附多色顏料。<br>挑選喜歡的顏色，親手淋出獨一無二的逗點人！'},{id:'oil',name:'逗點檜木精油（30ml）',img:'img/hinoki-oil.jpg',desc:'每一間逗點教室，都有一股熟悉的檜木香氣。<br>The Scent of COMMA，將屬於逗點的氣味融入日常，讓這份熟悉與溫暖，在生活中延續。'}];
 const SOCK_SIZES=[['兒童款','兒童款'],['成人款','成人款']];
 const sockSelect=id=>`<select id="${id}" required>${PH}${SOCK_SIZES.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select>`;
 let cart=[];
