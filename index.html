@@ -54,7 +54,7 @@
 <label class="pv-check" id="pvWrap"><input type="checkbox" id="pvRead"> 我已閱讀<a href="#" id="pvOpen">個人資料蒐集告知</a> <span class="req">*</span></label><button class="orange wide" id="submit">確認送出預購</button><p class="error" id="error" role="alert"></p><div id="result" hidden><h3 id="resultTitle">✅ 預購已送出</h3><p id="resultMsg" class="muted"></p><div id="orderCard" class="ordercard"></div><button class="secondary" id="copy" style="margin-top:10px">複製訂單內容</button> <button class="secondary" id="again" style="margin-top:10px">再填一筆</button><p class="status" id="copystatus"></p></div></section></main>
 <main class="wrap" id="thanksView" hidden><section class="thanks">
   <div class="t-check pend" id="tvIcon">!</div><h2 id="tvTitle">請完成匯款</h2><p class="muted" id="tvId"></p>
-  <div id="tvCash" hidden><div class="pay-alert cash">💵 <b>請盡快至 <span id="tcSchool"></span> 櫃檯以現金繳費</b><br>請於 <b>12/17（四）中午 12:00 前</b>完成繳費，繳費後訂單才算正式成立。<br>繳費時告知孩子姓名或出示訂單編號即可。</div><div class="bank" style="text-align:left"><div class="bank-row"><span>應付金額</span><b class="amt" id="tcAmt"></b></div></div><div class="to-transfer"><b>🏦 推薦改用匯款，不用跑櫃檯！</b><span>線上轉帳、掃 QR Code 就能完成。</span><button type="button" class="orange" id="toTransfer">改用匯款付款 →</button></div></div>
+  <div id="tvCash" hidden><div class="pay-alert cash">💵 <b>請盡快至 <span id="tcSchool"></span> 櫃檯以現金繳費</b><br>請於 <b>12/17（四）中午 12:00 前</b>完成繳費，繳費後訂單才算正式成立。<br>繳費時告知孩子姓名或出示訂單編號即可。</div><div class="bank" style="text-align:left"><div class="bank-row"><span>應付金額</span><b class="amt" id="tcAmt"></b></div></div><div class="to-transfer"><b>🏦 推薦使用匯款喔！就不用在櫃檯等候！</b><span>手機掃 QR Code 1 分鐘完成，免準備現金、不用找零。</span><button type="button" class="orange" id="toTransfer">改用匯款付款 →</button></div></div>
   <div class="pay-alert warn" id="tvAlert">⚠️ <b>訂單尚未完成！</b><br>請於 <b>12/17（四）中午 12:00 前</b>完成匯款並回傳資料，<br>確認入帳後，訂單才算正式成立。</div>
   <div class="pay-panel" id="tvPanel">
     <div class="qr-box"><img id="payQr" alt="匯款 QR Code"><p><b>長按 QR Code 儲存圖片</b>，開啟銀行 App 的「掃描轉帳」<br>帳號和金額會自動帶入</p><a class="mini" id="qrDl" download="逗點12週年匯款QRCode.png">⬇ 下載 QR Code</a></div>
@@ -231,7 +231,7 @@ $id('tfSend').onclick=async()=>{
     const r=await fetch(SHEET_URL,{method:'POST',body:JSON.stringify({action:'report',orderId:curOrder.orderId,phone:curOrder.phone,name:curOrder.name,payDate:d.replace(/-/g,'/'),amount:Number(a),last5:l})});
     const j=await r.json();if(!j.ok)throw new Error(j.error||'送出失敗');
     $id('tvPanel').hidden=true;$id('tvAlert').hidden=true;$id('tvIcon').hidden=true;$id('tvTitle').textContent='匯款資料已送出';
-    $id('payDone').hidden=false;$id('payDoneMsg').innerHTML=`<span class="nw">匯款日期 ${d.replace(/-/g,'/')}</span>｜<span class="nw">金額 NT$ ${Number(a).toLocaleString()}</span>｜<span class="nw">末五碼 ${l}</span><br>📨 確認信已寄到您的信箱。<br>我們將於 <b>1～3 個工作天</b>內確認入帳，<br>確認完成後，會寄送「訂單完成通知」到您的信箱。`;
+    $id('payDone').hidden=false;$id('payDoneMsg').innerHTML=`<span class="nw">匯款日期 ${d.replace(/-/g,'/')}</span>｜<span class="nw">金額 NT$ ${Number(a).toLocaleString()}</span>｜<span class="nw">末五碼 ${l}</span><br>我們將於 <b>1～3 個工作天</b>內確認入帳，<br>確認完成後，會寄送「訂單完成通知」到您的信箱。`;
     $id('payDone').scrollIntoView({behavior:'smooth',block:'center'});
   }catch(e){err.textContent=(e.message&&e.message.length<40?e.message:'送出失敗')+'，請稍後再試一次。'}
   finally{b.disabled=false;b.textContent='送出匯款資料'}
