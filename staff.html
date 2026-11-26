@@ -112,7 +112,7 @@ input[type=date]{-webkit-appearance:none;appearance:none;display:block;width:100
         <button class="chip" data-f="done">已完成</button>
       </div>
     </div>
-    <p class="muted ro-note" id="roNote" hidden>💡 家長到櫃檯繳<b>現金</b>時，請按「未付款」登記收款；<b>匯款</b>由總部核對入帳後自動更新。取貨請按「未取貨」登記。</p>
+    <p class="muted ro-note" id="roNote" hidden>💡 <b>現金</b>：家長到櫃檯繳費時，請按「未付款」登記收款。<br>🏦 <b>匯款</b>：由總部財會部對帳，分校只能查看付款狀況、無法修改（避免誤按）；對帳完成後會自動更新為「已付款」。<br>📦 <b>取貨</b>：家長來拿時，請按「未取貨」登記。</p>
     <div id="list"></div>
     <p class="muted" id="updated"></p>
   </section>
@@ -215,7 +215,7 @@ function render(){
       <div class="o-items">${esc(o.items)}</div>${o.memo?`<div class="o-memo">備註：${esc(o.memo)}</div>`:''}</div>
     <div class="o-right"><div class="o-total">${o.total==null?'待公布':money(o.total)}</div>
       <div class="toggles">
-        ${canPay(o)?`<button class="tg ${o.paid?'on':''}" data-id="${esc(o.orderId)}" data-f="paid"${!o.paid&&o.reported?' data-pend="1"':''}><span class="box">${o.paid?'✓':!o.paid&&o.reported?'!':''}</span>${o.paid?'已付款':o.reported?'待核對':'未付款'}</button>`:`<span class="tg ro ${o.paid?'on':''}"${!o.paid&&o.reported?' data-pend="1"':''} title="匯款由總部核對入帳"><span class="box">${o.paid?'✓':!o.paid&&o.reported?'!':''}</span>${o.paid?'已付款':o.reported?'待核對':'未付款'}</span>`}
+        ${canPay(o)?`<button class="tg ${o.paid?'on':''}" data-id="${esc(o.orderId)}" data-f="paid"${!o.paid&&o.reported?' data-pend="1"':''}><span class="box">${o.paid?'✓':!o.paid&&o.reported?'!':''}</span>${o.paid?'已付款':o.reported?'待核對':'未付款'}</button>`:`<span class="tg ro ${o.paid?'on':''}"${!o.paid&&o.reported?' data-pend="1"':''} title="匯款由財會部對帳，分校僅供查看"><span class="box">${o.paid?'✓':!o.paid&&o.reported?'!':''}</span>${o.paid?'已付款':o.reported?'待核對':'未付款'}</span>`}
         <button class="tg ${o.picked?'on':''}" data-id="${esc(o.orderId)}" data-f="picked"><span class="box">${o.picked?'✓':''}</span>${o.picked?'已取貨':'未取貨'}</button>
       </div>${!o.paid&&o.reported?`<div class="payline pendline">🕒 家長回傳：${esc(o.reported.date.slice(5))}｜NT$ ${Number(o.reported.amount).toLocaleString()}｜末五碼 ${esc(o.reported.last5)}${o.total!=null&&Number(o.reported.amount)!==o.total?' ⚠️ 金額不符':''}</div>`:''}${o.paid&&o.payMethod?`<div class="payline">💰 ${esc(o.payDate.slice(5))} 收款｜${esc(o.payMethod)}${o.last5?' 末五碼 '+esc(o.last5):''}</div>`:''}${o.picked&&o.pickDate?`<div class="payline">📦 ${esc(o.pickDate.slice(5))} 已取貨</div>`:o.arrived?`<div class="payline" style="color:#2c5282">✉️ 已通知到貨</div>`:''}</div></div>`).join(''):`<div class="empty">${scope.length?'沒有符合條件的訂單':'目前還沒有這間分校的訂單'}</div>`;
 }
@@ -235,9 +235,9 @@ $('chips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;filter=b.d
 
 $('list').onclick=async e=>{
   const b=e.target.closest('.tg');if(!b||b.classList.contains('busy'))return;
+  if(b.classList.contains('ro')){toast('匯款由財會部對帳，分校僅供查看');return}
   const o=orders.find(x=>x.orderId===b.dataset.id),f=b.dataset.f;if(!o)return;
   const next=!o[f];
-  if(b.classList.contains('ro'))return;
   if(f==='paid'&&next){openPay(o);return}
   if(f==='picked'&&next){openPick(o);return}
   if(!next&&!confirmUndo(b,f))return;
