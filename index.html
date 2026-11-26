@@ -102,12 +102,12 @@
 /* ===== 價格設定：價格公布後填入數字即可（null = 價格待公布） ===== */
 const PRICES={            // pre＝預購價；regular＝現場販售價（顯示為劃掉的價格）
   tee:   {pre:390,  regular:450},
-  hoodie:{pre:800,  regular:890},
+  hoodie:{pre:800,  regular:980},
   sock1: {pre:120,  regular:150},
   sock2: {pre:120,  regular:150},
   combo: {pre:1350, regular:1550},
   box:   {pre:990,  regular:1220},
-  oil:   {pre:550,  regular:600}
+  oil:   {pre:880,  regular:980}
 };
 /* Google 試算表收單網址：部署 Apps Script 後，把網址貼在引號中 */
 const SHEET_URL='https://script.google.com/macros/s/AKfycby2-ofyhdvl4cVOiuXezXwRleN1qDDqPrNqjdO_ZhS8DBepl0J4xbtqryXSIMasNo8Rkw/exec';
@@ -119,7 +119,7 @@ const SIZE_LABEL={'130':'YM（兒童款）','140':'YL（兒童款）'};const siz
 const PH='<option value="" selected disabled>— 請選擇 —</option>';
 const sizeOpts=()=>PH+sizes.map(s=>`<option value="${s}">${sizeLabel(s)}</option>`).join('');
 const chartBtn=t=>`<button type="button" class="chart-btn" onclick="openChart('${t}')">📏 尺寸表</button>`;
-const items=[{id:'combo',name:'12週年限定組合｜短 T＋帽 T＋無限款襪子＋逗點人款襪子',img:'img/combo-v5.jpg',combo:true},{id:'tee',name:'12週年紀念短 T（白）',img:'img/tee-v2.jpg',size:true},{id:'hoodie',name:'12週年紀念帽 T（丈青）',img:'img/hoodie-v2.jpg',size:true},{id:'sock1',name:'襪子（無限款）',img:'img/sock-infinity-v2.jpg',sock:true},{id:'sock2',name:'襪子（逗點人款）',img:'img/sock-comma-v2.jpg',sock:true},{id:'box',name:'逗點人存錢筒（附顏料）',img:'img/moneybox-v2.jpg',desc:'流體彩繪 DIY 存錢筒，附多色顏料。<br>挑選喜歡的顏色，親手淋出獨一無二的逗點人！'},{id:'oil',name:'逗點檜木精油（30ml）',img:'img/hinoki-oil.jpg',desc:'每一間逗點教室，都有一股熟悉的檜木香氣。<br>The Scent of COMMA，將屬於逗點的氣味融入日常，讓這份熟悉與溫暖，在生活中延續。'}];
+const items=[{id:'combo',name:'12週年限定組合｜短 T＋帽 T＋無限款襪子＋逗點人款襪子',img:'img/combo-v6.jpg',combo:true},{id:'tee',name:'12週年紀念短 T（白）',img:'img/tee-v3.jpg',size:true},{id:'hoodie',name:'12週年紀念帽 T（丈青）',img:'img/hoodie-v3.jpg',size:true},{id:'sock1',name:'襪子（無限款）',img:'img/sock-infinity-v3.jpg',sock:true},{id:'sock2',name:'襪子（逗點人款）',img:'img/sock-comma-v3.jpg',sock:true},{id:'box',name:'逗點善的種子｜流體彩繪 DIY 存錢筒（附顏料）',img:'img/moneybox-v2.jpg',desc:'每天存下一點零錢，就像每天為心中的種子澆一點水。<br>透過日復一日的累積，讓夢想與信念慢慢茁壯。<br>內附多色顏料，用喜歡的色彩，親手創作專屬於自己的逗點人。'},{id:'oil',name:'逗點原木香｜台灣檜木精油（30ml）',img:'img/hinoki-oil.jpg',desc:'每一間逗點教室，都有一股熟悉的檜木香氣。<br>The Scent of COMMA，將屬於逗點的氣味融入日常，讓這份熟悉與溫暖，在生活中延續。'}];
 const SOCK_SIZES=[['兒童款','兒童款'],['成人款','成人款']];
 const sockSelect=id=>`<select id="${id}" required>${PH}${SOCK_SIZES.map(([v,t])=>`<option value="${v}">${t}</option>`).join('')}</select>`;
 let cart=[];
